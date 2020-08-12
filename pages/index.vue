@@ -72,19 +72,12 @@
 import Vue, { PropOptions } from "vue";
 import { mapMutations } from "vuex";
 
-interface Item {
-    id: number;
-    name: string;
-    image: string;
-    price: number;
-    inventory: number;
-}
 
 export default Vue.extend({
     data() {
         return {
             show: false,
-            items: [] as PropOptions<Item>,
+            items: [] as object
         };
     },
     created() {
