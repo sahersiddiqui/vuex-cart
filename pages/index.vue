@@ -6,16 +6,17 @@
                     <el-header>
                         <el-row>
                             <el-col :span="12">Food Items</el-col>
-                            <el-col :span="12" class="pull-right">
-                                <el-popover placement="bottom" width="250"  trigger="click">
+                            <el-col :span="6" class="pull-right">
+                                <el-popover placement="bottom" width="250" trigger="click">
                                     <div v-if="carts.length">
-                                        <el-row v-for="(item,key) in carts" v-bind:key="key">
-                                            <el-col :span="24">
-                                                <span class="el-danger">{{item.name}} X {{item.quantity}}</span>
-                                                <span>{{item.price | currency}}</span>
-                                                <i  class=" el-icon-delete color-danger"  ></i>
-                                            </el-col>
-                                        </el-row>
+                                        <ul>
+                                            <li v-for="(item,key) in carts" v-bind:key="key">
+                                                <span
+                                                    class="el-danger"
+                                                >{{item.name}} X {{item.quantity}} - {{item.price | currency}}</span>
+                                                <i class="el-icon-delete color-danger" @click="removeCartItem(item.id)"></i>
+                                            </li>
+                                        </ul>
                                     </div>
                                     <div v-else>
                                         <el-row>
@@ -24,14 +25,21 @@
                                             </el-col>
                                         </el-row>
                                     </div>
-                                    <el-badge :value="carts.length" class="item" slot="reference" >
-                                        <el-button  icon="el-icon-shopping-cart-2" circle size="medium"></el-button>
+                                    <el-badge :value="carts.length" class="item" slot="reference">
+                                        <el-button
+                                            icon="el-icon-shopping-cart-2"
+                                            circle
+                                            size="medium"
+                                        ></el-button>
                                     </el-badge>
                                 </el-popover>
                             </el-col>
+                            <!-- <el-col :span="6">
+                                Cart Total - {{cartTotal | currency}}
+                            </el-col> -->
                         </el-row>
                     </el-header>
-
+                    <div style="display:none">{{carts}} </div>
                     <el-main>
                         <el-row :gutter="20">
                             <el-col
@@ -77,7 +85,6 @@ export default Vue.extend({
         return {
             show: false,
             items: [] as PropOptions<Item>,
-            
         };
     },
     created() {
@@ -85,9 +92,11 @@ export default Vue.extend({
     },
     computed: {
         carts() {
-            debugger
-            return this.$store.state.cart.products;
+            return this.$store.getters["cart/cartItems"];
         },
+        cartTotal(){
+            return this.$store.getters['cart/cartTotal']
+        }
     },
     methods: {
         getFoodItems() {
@@ -102,102 +111,68 @@ export default Vue.extend({
                 },
                 {
                     id: 2,
-                    name: "sandwich",
+                    name: "burger",
                     image:
                         "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
+                    price: 10,
                     inventory: 100,
                 },
                 {
                     id: 3,
-                    name: "sandwich",
+                    name: "pizza",
                     image:
                         "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
+                    price: 20,
                     inventory: 100,
                 },
                 {
                     id: 4,
-                    name: "sandwich",
+                    name: "samosa",
                     image:
                         "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
+                    price: 50,
                     inventory: 100,
                 },
                 {
                     id: 5,
-                    name: "sandwich",
+                    name: "pasta",
                     image:
                         "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
+                    price: 90,
                     inventory: 100,
                 },
                 {
                     id: 6,
-                    name: "sandwich",
+                    name: "maggie",
                     image:
                         "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
+                    price: 70,
                     inventory: 100,
                 },
                 {
                     id: 7,
-                    name: "sandwich",
+                    name: "sweet corn",
                     image:
                         "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
+                    price: 45,
                     inventory: 100,
                 },
                 {
                     id: 8,
-                    name: "sandwich",
+                    name: "popcorn",
                     image:
                         "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
-                    inventory: 100,
-                },
-                {
-                    id: 9,
-                    name: "sandwich",
-                    image:
-                        "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
-                    inventory: 100,
-                },
-                {
-                    id: 10,
-                    name: "sandwich",
-                    image:
-                        "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
-                    inventory: 100,
-                },
-                {
-                    id: 11,
-                    name: "sandwich",
-                    image:
-                        "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
-                    inventory: 100,
-                },
-                {
-                    id: 12,
-                    name: "sandwich",
-                    image:
-                        "https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/news-image/sonic-drive-beefs-menu-biggie-cheese-499.jpg?itok=L8Ljd-WY",
-                    price: 100,
+                    price: 68,
                     inventory: 100,
                 },
             ];
         },
-        addItemToCart(product: number) {
+        addItemToCart(product: object) {
             this.$store.dispatch("cart/addItemToCart", product);
         },
-        ...mapMutations({
-            toggle: "cart/toggle",
-        }),
-        removeTodo(todo: number) {
-            this.$store.commit("cart/remove", todo);
+      
+        removeCartItem(product: object) {
+            this.$store.commit("cart/removeCartItem", product);
         },
     },
 });
